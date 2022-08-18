@@ -1,0 +1,518 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="beadandó_JRZUJVModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Appointment">
+          <Key>
+            <PropertyRef Name="AppointmentID" />
+          </Key>
+          <Property Name="AppointmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="PatientID_FK" Type="int" Nullable="false" />
+          <Property Name="RoomID_FK" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DepartmentID" />
+          </Key>
+          <Property Name="DepartmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Head" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DoctorID_FK" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="DoctorID" />
+          </Key>
+          <Property Name="DoctorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Position" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Medication">
+          <Key>
+            <PropertyRef Name="MedicationID" />
+          </Key>
+          <Property Name="MedicationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Brand" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="PatientID" />
+          </Key>
+          <Property Name="PatientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="70" Nullable="false" />
+          <Property Name="Phone" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Prescription">
+          <Key>
+            <PropertyRef Name="PrescriptionID" />
+          </Key>
+          <Property Name="PrescriptionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientID_FK" Type="int" Nullable="false" />
+          <Property Name="MedicationID_FK" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Procedure">
+          <Key>
+            <PropertyRef Name="ProcedureID" />
+          </Key>
+          <Property Name="ProcedureID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DoctorID_FK" Type="int" Nullable="false" />
+          <Property Name="PatientID_FK" Type="int" Nullable="false" />
+          <Property Name="RoomID_FK" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="RoomID" />
+          </Key>
+          <Property Name="RoomID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Availability" Type="bit" Nullable="false" />
+          <Property Name="Floor" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="Appointment_fk0">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="PatientID" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="PatientID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Appointment_fk1">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="RoomID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Department_fk0">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Department" Type="Self.Department" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="DoctorID" />
+            </Principal>
+            <Dependent Role="Department">
+              <PropertyRef Name="DoctorID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Prescription_fk0">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Prescription" Type="Self.Prescription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="PatientID" />
+            </Principal>
+            <Dependent Role="Prescription">
+              <PropertyRef Name="PatientID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Prescription_fk1">
+          <End Role="Medication" Type="Self.Medication" Multiplicity="1" />
+          <End Role="Prescription" Type="Self.Prescription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medication">
+              <PropertyRef Name="MedicationID" />
+            </Principal>
+            <Dependent Role="Prescription">
+              <PropertyRef Name="MedicationID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Procedure_fk0">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Procedure" Type="Self.Procedure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="PatientID" />
+            </Principal>
+            <Dependent Role="Procedure">
+              <PropertyRef Name="PatientID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Procedure_fk1">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="Procedure" Type="Self.Procedure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="Procedure">
+              <PropertyRef Name="RoomID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="beadandó_JRZUJVModelStoreContainer">
+          <EntitySet Name="Appointment" EntityType="Self.Appointment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Medication" EntityType="Self.Medication" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Prescription" EntityType="Self.Prescription" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Procedure" EntityType="Self.Procedure" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Appointment_fk0" Association="Self.Appointment_fk0">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Appointment" EntitySet="Appointment" />
+          </AssociationSet>
+          <AssociationSet Name="Appointment_fk1" Association="Self.Appointment_fk1">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="Appointment" EntitySet="Appointment" />
+          </AssociationSet>
+          <AssociationSet Name="Department_fk0" Association="Self.Department_fk0">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Department" EntitySet="Department" />
+          </AssociationSet>
+          <AssociationSet Name="Prescription_fk0" Association="Self.Prescription_fk0">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Prescription" EntitySet="Prescription" />
+          </AssociationSet>
+          <AssociationSet Name="Prescription_fk1" Association="Self.Prescription_fk1">
+            <End Role="Medication" EntitySet="Medication" />
+            <End Role="Prescription" EntitySet="Prescription" />
+          </AssociationSet>
+          <AssociationSet Name="Procedure_fk0" Association="Self.Procedure_fk0">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Procedure" EntitySet="Procedure" />
+          </AssociationSet>
+          <AssociationSet Name="Procedure_fk1" Association="Self.Procedure_fk1">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="Procedure" EntitySet="Procedure" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="beadandó_JRZUJVModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Appointment">
+          <Key>
+            <PropertyRef Name="AppointmentID" />
+          </Key>
+          <Property Name="AppointmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PatientID_FK" Type="Int32" Nullable="false" />
+          <Property Name="RoomID_FK" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Patient" Relationship="Self.Appointment_fk0" FromRole="Appointment" ToRole="Patient" />
+          <NavigationProperty Name="Room" Relationship="Self.Appointment_fk1" FromRole="Appointment" ToRole="Room" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DepartmentID" />
+          </Key>
+          <Property Name="DepartmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Head" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DoctorID_FK" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Doctor" Relationship="Self.Department_fk0" FromRole="Department" ToRole="Doctor" />
+        </EntityType>
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="DoctorID" />
+          </Key>
+          <Property Name="DoctorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Departments" Relationship="Self.Department_fk0" FromRole="Doctor" ToRole="Department" />
+        </EntityType>
+        <EntityType Name="Medication">
+          <Key>
+            <PropertyRef Name="MedicationID" />
+          </Key>
+          <Property Name="MedicationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Prescriptions" Relationship="Self.Prescription_fk1" FromRole="Medication" ToRole="Prescription" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="PatientID" />
+          </Key>
+          <Property Name="PatientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="70" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Appointments" Relationship="Self.Appointment_fk0" FromRole="Patient" ToRole="Appointment" />
+          <NavigationProperty Name="Prescriptions" Relationship="Self.Prescription_fk0" FromRole="Patient" ToRole="Prescription" />
+          <NavigationProperty Name="Procedures" Relationship="Self.Procedure_fk0" FromRole="Patient" ToRole="Procedure" />
+        </EntityType>
+        <EntityType Name="Prescription">
+          <Key>
+            <PropertyRef Name="PrescriptionID" />
+          </Key>
+          <Property Name="PrescriptionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientID_FK" Type="Int32" Nullable="false" />
+          <Property Name="MedicationID_FK" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Medication" Relationship="Self.Prescription_fk1" FromRole="Prescription" ToRole="Medication" />
+          <NavigationProperty Name="Patient" Relationship="Self.Prescription_fk0" FromRole="Prescription" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="Procedure">
+          <Key>
+            <PropertyRef Name="ProcedureID" />
+          </Key>
+          <Property Name="ProcedureID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DoctorID_FK" Type="Int32" Nullable="false" />
+          <Property Name="PatientID_FK" Type="Int32" Nullable="false" />
+          <Property Name="RoomID_FK" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Patient" Relationship="Self.Procedure_fk0" FromRole="Procedure" ToRole="Patient" />
+          <NavigationProperty Name="Room" Relationship="Self.Procedure_fk1" FromRole="Procedure" ToRole="Room" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="RoomID" />
+          </Key>
+          <Property Name="RoomID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Availability" Type="Boolean" Nullable="false" />
+          <Property Name="Floor" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Appointments" Relationship="Self.Appointment_fk1" FromRole="Room" ToRole="Appointment" />
+          <NavigationProperty Name="Procedures" Relationship="Self.Procedure_fk1" FromRole="Room" ToRole="Procedure" />
+        </EntityType>
+        <Association Name="Appointment_fk0">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="PatientID" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="PatientID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Appointment_fk1">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="Appointment" Type="Self.Appointment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="Appointment">
+              <PropertyRef Name="RoomID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Department_fk0">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Department" Type="Self.Department" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="DoctorID" />
+            </Principal>
+            <Dependent Role="Department">
+              <PropertyRef Name="DoctorID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Prescription_fk1">
+          <End Role="Medication" Type="Self.Medication" Multiplicity="1" />
+          <End Role="Prescription" Type="Self.Prescription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Medication">
+              <PropertyRef Name="MedicationID" />
+            </Principal>
+            <Dependent Role="Prescription">
+              <PropertyRef Name="MedicationID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Prescription_fk0">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Prescription" Type="Self.Prescription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="PatientID" />
+            </Principal>
+            <Dependent Role="Prescription">
+              <PropertyRef Name="PatientID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Procedure_fk0">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Procedure" Type="Self.Procedure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="PatientID" />
+            </Principal>
+            <Dependent Role="Procedure">
+              <PropertyRef Name="PatientID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Procedure_fk1">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="Procedure" Type="Self.Procedure" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="RoomID" />
+            </Principal>
+            <Dependent Role="Procedure">
+              <PropertyRef Name="RoomID_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="beadandó_JRZUJVEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Appointments" EntityType="Self.Appointment" />
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="Doctors" EntityType="Self.Doctor" />
+          <EntitySet Name="Medications" EntityType="Self.Medication" />
+          <EntitySet Name="Patients" EntityType="Self.Patient" />
+          <EntitySet Name="Prescriptions" EntityType="Self.Prescription" />
+          <EntitySet Name="Procedures" EntityType="Self.Procedure" />
+          <EntitySet Name="Rooms" EntityType="Self.Room" />
+          <AssociationSet Name="Appointment_fk0" Association="Self.Appointment_fk0">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Appointment" EntitySet="Appointments" />
+          </AssociationSet>
+          <AssociationSet Name="Appointment_fk1" Association="Self.Appointment_fk1">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="Appointment" EntitySet="Appointments" />
+          </AssociationSet>
+          <AssociationSet Name="Department_fk0" Association="Self.Department_fk0">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="Department" EntitySet="Departments" />
+          </AssociationSet>
+          <AssociationSet Name="Prescription_fk1" Association="Self.Prescription_fk1">
+            <End Role="Medication" EntitySet="Medications" />
+            <End Role="Prescription" EntitySet="Prescriptions" />
+          </AssociationSet>
+          <AssociationSet Name="Prescription_fk0" Association="Self.Prescription_fk0">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Prescription" EntitySet="Prescriptions" />
+          </AssociationSet>
+          <AssociationSet Name="Procedure_fk0" Association="Self.Procedure_fk0">
+            <End Role="Patient" EntitySet="Patients" />
+            <End Role="Procedure" EntitySet="Procedures" />
+          </AssociationSet>
+          <AssociationSet Name="Procedure_fk1" Association="Self.Procedure_fk1">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="Procedure" EntitySet="Procedures" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="beadandó_JRZUJVModelStoreContainer" CdmEntityContainer="beadandó_JRZUJVEntities">
+          <EntitySetMapping Name="Appointments">
+            <EntityTypeMapping TypeName="beadandó_JRZUJVModel.Appointment">
+              <MappingFragment StoreEntitySet="Appointment">
+                <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="PatientID_FK" ColumnName="PatientID_FK" />
+                <ScalarProperty Name="RoomID_FK" ColumnName="RoomID_FK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="beadandó_JRZUJVModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Head" ColumnName="Head" />
+                <ScalarProperty Name="DoctorID_FK" ColumnName="DoctorID_FK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Doctors">
+            <EntityTypeMapping TypeName="beadandó_JRZUJVModel.Doctor">
+              <MappingFragment StoreEntitySet="Doctor">
+                <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Medications">
+            <EntityTypeMapping TypeName="beadandó_JRZUJVModel.Medication">
+              <MappingFragment StoreEntitySet="Medication">
+                <ScalarProperty Name="MedicationID" ColumnName="MedicationID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Brand" ColumnName="Brand" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patients">
+            <EntityTypeMapping TypeName="beadandó_JRZUJVModel.Patient">
+              <MappingFragment StoreEntitySet="Patient">
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prescriptions">
+            <EntityTypeMapping TypeName="beadandó_JRZUJVModel.Prescription">
+              <MappingFragment StoreEntitySet="Prescription">
+                <ScalarProperty Name="PrescriptionID" ColumnName="PrescriptionID" />
+                <ScalarProperty Name="PatientID_FK" ColumnName="PatientID_FK" />
+                <ScalarProperty Name="MedicationID_FK" ColumnName="MedicationID_FK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Procedures">
+            <EntityTypeMapping TypeName="beadandó_JRZUJVModel.Procedure">
+              <MappingFragment StoreEntitySet="Procedure">
+                <ScalarProperty Name="ProcedureID" ColumnName="ProcedureID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DoctorID_FK" ColumnName="DoctorID_FK" />
+                <ScalarProperty Name="PatientID_FK" ColumnName="PatientID_FK" />
+                <ScalarProperty Name="RoomID_FK" ColumnName="RoomID_FK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rooms">
+            <EntityTypeMapping TypeName="beadandó_JRZUJVModel.Room">
+              <MappingFragment StoreEntitySet="Room">
+                <ScalarProperty Name="RoomID" ColumnName="RoomID" />
+                <ScalarProperty Name="RoomType" ColumnName="RoomType" />
+                <ScalarProperty Name="Availability" ColumnName="Availability" />
+                <ScalarProperty Name="Floor" ColumnName="Floor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
